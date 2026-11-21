@@ -1,0 +1,594 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>各组问题描述质量看板</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;background:#f5f6f8;
+color:#1f2430;padding:28px 20px 56px}
+.wrap{max-width:1120px;margin:0 auto}
+h1{font-size:22px;font-weight:650;letter-spacing:-.2px}
+.meta{color:#6b7280;font-size:13px;margin-top:7px;line-height:1.75}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:22px 0 18px}
+.kpi{background:#fff;border:1px solid #e8eaee;border-radius:12px;padding:15px 17px}
+.kpi span{font-size:12px;color:#6b7280}
+.kpi b{display:block;font-size:27px;font-weight:700;margin:6px 0 2px;line-height:1.15}
+.kpi b em{font-size:13px;font-style:normal;font-weight:400;color:#6b7280;margin-left:3px}
+.kpi small{font-size:11.5px;color:#9aa3af}
+.mini{height:5px;background:#eef0f3;border-radius:3px;margin:9px 0 6px;overflow:hidden}
+.mini i{display:block;height:100%;border-radius:3px}
+.panel{background:#fff;border:1px solid #e8eaee;border-radius:12px;padding:16px 18px 14px;margin-bottom:14px}
+.ph{display:flex;align-items:center;gap:9px;margin-bottom:13px;flex-wrap:wrap}
+.ph h3{font-size:15px;font-weight:650}
+.dot{width:8px;height:8px;border-radius:50%;flex:none}
+.cnt{font-size:19px;font-weight:700}
+.sub{font-size:12px;color:#9aa3af}
+.note{font-size:12px;color:#9aa3af;margin-left:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{font-size:11.5px;font-weight:600;color:#8b93a1;text-align:left;
+padding:0 8px 9px;border-bottom:1px solid #eef0f3;white-space:nowrap}
+th.r,td.num{text-align:right}
+td{padding:11px 8px;border-bottom:1px solid #f4f5f7;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.gn{font-weight:600;white-space:nowrap}
+.gn i{display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:7px;vertical-align:1px}
+.num{font-variant-numeric:tabular-nums;color:#4b5563}
+.cell{white-space:nowrap}
+.bwrap{position:relative;display:inline-block;width:150px;vertical-align:middle}
+.bwrap2{width:110px}
+.bar{display:block;height:7px;background:#f1f3f5;border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:4px}
+.ref{position:absolute;top:-2.5px;bottom:-2.5px;width:1.5px;background:#94a3b8;
+border-radius:1px;opacity:.85}
+.pct{display:inline-block;min-width:44px;margin-left:8px;font-variant-numeric:tabular-nums;
+font-weight:600;font-size:12.5px}
+.pct2{display:inline-block;min-width:42px;margin-left:8px;color:#8b93a1;font-size:12px;
+font-variant-numeric:tabular-nums}
+.thnote{font-size:10.5px;color:#b6bcc6;font-weight:400;margin-left:3px}
+.grid2{display:grid;grid-template-columns:270px 1fr;gap:14px}
+.donutwrap{display:flex;align-items:center;gap:18px;padding:4px 0 6px}
+.donut{width:132px;height:132px;border-radius:50%;position:relative;flex:none;
+background:conic-gradient(from -90deg, #dc2626 0.0% 48.9%, #e08a1e 48.9% 87.2%, #16a34a 87.2% 93.6%, #94a3b8 93.6% 100.0%)}
+.donut::after{content:"";position:absolute;inset:26px;background:#fff;border-radius:50%}
+.donut b{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+justify-content:center;font-size:22px;font-weight:700;z-index:1}
+.donut b em{font-size:10.5px;font-style:normal;font-weight:400;color:#9aa3af;margin-top:1px}
+.lg{font-size:12.5px;line-height:2.05;color:#4b5563;flex:1}
+.lg i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:7px;
+vertical-align:0px}
+.lg b{color:#1f2430;font-variant-numeric:tabular-nums;margin-left:5px}
+.srow{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.slabel{width:66px;font-size:12.5px;color:#4b5563;white-space:nowrap}
+.slabel i{display:inline-block;width:6px;height:6px;border-radius:2px;margin-right:6px;
+vertical-align:1px}
+.sbar{flex:1;height:16px;background:#f7f8fa;border-radius:4px;display:flex;overflow:hidden}
+.sbar i{display:block;height:100%}
+.snum{width:58px;text-align:right;font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums}
+.snum em{font-style:normal;font-weight:400;color:#9aa3af}
+.legend{display:flex;gap:14px;font-size:11.5px;color:#8b93a1;margin-top:2px;padding-left:76px;flex-wrap:wrap}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;
+vertical-align:0}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:11px}
+.chip{font-size:12px;background:#f7f8fa;border:1px solid #eef0f3;border-radius:20px;
+padding:3px 10px;color:#4b5563}
+.chip b{margin-left:6px;color:#1f2430}
+summary{cursor:pointer;font-size:12.5px;color:#5b6472;padding:7px 0;
+border-top:1px solid #f4f5f7;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸ ";color:#c3c9d2}
+details[open] summary::before{content:"▾ "}
+summary:hover{color:#1f2430}
+.list{list-style:none}
+.list li{display:flex;gap:9px;padding:8px 0;border-bottom:1px solid #f7f8fa;
+font-size:12.5px;line-height:1.6;align-items:baseline}
+.list li:last-child{border-bottom:none}
+.tag{flex:none;font-size:11px;padding:2px 7px;border-radius:4px;background:#fff7e6;
+color:#b45309;border:1px solid #fde6bb;white-space:nowrap}
+.tag.t2{background:#fef2f2;color:#b91c1c;border-color:#fecaca}
+.who{flex:none;font-weight:600;color:#374151;min-width:52px}
+.sid{flex:none;color:#a1a8b3;font-size:11px;font-family:ui-monospace,monospace;
+min-width:92px}
+.ds{color:#5b6472;flex:1}
+.foot{font-size:11.5px;color:#a1a8b3;text-align:center;margin-top:22px;line-height:1.9}
+@media(max-width:820px){
+.kpis{grid-template-columns:repeat(2,1fr)}
+.grid2{grid-template-columns:1fr}
+.bwrap{width:88px}.bwrap2{width:60px}
+}
+</style></head><body><div class="wrap">
+<h1>各组问题描述质量看板</h1>
+<div class="meta">
+数据源：知音楼《无标题》· 服务单明细 ｜ 工单总量 <b>312</b> 单 ｜ 组别依据「当前技能组」<br>
+判定口径：既写清争议产生原因、又写明用户不认可的具体点＝无问题；缺任一项＝有问题（未明确争议原因 / 未明确争议点）
+</div>
+
+<div class="kpis">
+  <div class="kpi"><span>工单总量</span><b>312<em>单</em></b>
+    <div class="mini"><i style="width:100%;background:#cbd5e1"></i></div>
+    <small>覆盖 4 个组别</small></div>
+  <div class="kpi"><span>有问题工单</span><b style="color:#dc2626">47<em>单</em></b>
+    <div class="mini"><i style="width:15.1%;background:#dc2626"></i></div>
+    <small>占全量 15.1%</small></div>
+  <div class="kpi"><span>问题率最高的组</span><b style="color:#dc2626">17.8<em>%</em></b>
+    <div class="mini"><i style="width:17.8%;background:#dc2626"></i></div>
+    <small>小店组 · 23/129 单</small></div>
+  <div class="kpi"><span>问题最集中的组</span><b style="color:#dc2626">23<em>单</em></b>
+    <div class="mini"><i style="width:48.9%;background:#dc2626"></i></div>
+    <small>小店组 · 占全部问题 48.9%</small></div>
+</div>
+
+<div class="panel">
+  <div class="ph"><h3>组别对比</h3>
+    <span class="note">组内问题率＝本组有问题÷本组总量　占全部问题＝本组有问题÷47</span></div>
+  <table>
+    <thead><tr>
+      <th>组别</th><th class="r">工单总量</th><th class="r">有问题</th>
+      <th>组内问题率<span class="thnote">竖线＝整体 15.1%</span></th>
+      <th>占全部问题</th>
+    </tr></thead>
+    <tbody>
+    <tr>
+      <td class="gn"><i style="background:#dc2626"></i>小店组</td>
+      <td class="num">129</td>
+      <td class="num"><b style="color:#dc2626">23</b></td>
+      <td class="cell">
+        <span class="bwrap">
+          <span class="bar"><i style="width:17.8%;background:#dc2626"></i></span>
+          <span class="ref" style="left:15.1%" title="整体 15.1%"></span>
+        </span>
+        <span class="pct">17.8%</span>
+      </td>
+      <td class="cell">
+        <span class="bwrap bwrap2">
+          <span class="bar"><i style="width:48.9%;background:#dc2626"></i></span>
+        </span>
+        <span class="pct2">48.9%</span>
+      </td>
+    </tr>
+    <tr>
+      <td class="gn"><i style="background:#e08a1e"></i>课程组</td>
+      <td class="num">148</td>
+      <td class="num"><b style="color:#e08a1e">18</b></td>
+      <td class="cell">
+        <span class="bwrap">
+          <span class="bar"><i style="width:12.2%;background:#e08a1e"></i></span>
+          <span class="ref" style="left:15.1%" title="整体 15.1%"></span>
+        </span>
+        <span class="pct">12.2%</span>
+      </td>
+      <td class="cell">
+        <span class="bwrap bwrap2">
+          <span class="bar"><i style="width:38.3%;background:#e08a1e"></i></span>
+        </span>
+        <span class="pct2">38.3%</span>
+      </td>
+    </tr>
+    <tr>
+      <td class="gn"><i style="background:#16a34a"></i>图书组</td>
+      <td class="num">29</td>
+      <td class="num"><b style="color:#16a34a">3</b></td>
+      <td class="cell">
+        <span class="bwrap">
+          <span class="bar"><i style="width:10.3%;background:#16a34a"></i></span>
+          <span class="ref" style="left:15.1%" title="整体 15.1%"></span>
+        </span>
+        <span class="pct">10.3%</span>
+      </td>
+      <td class="cell">
+        <span class="bwrap bwrap2">
+          <span class="bar"><i style="width:6.4%;background:#16a34a"></i></span>
+        </span>
+        <span class="pct2">6.4%</span>
+      </td>
+    </tr>
+    <tr style="opacity:.62">
+      <td class="gn"><i style="background:#94a3b8"></i>未匹配</td>
+      <td class="num">6</td>
+      <td class="num"><b style="color:#94a3b8">3</b></td>
+      <td class="cell">
+        <span class="bwrap">
+          <span class="bar"><i style="width:50.0%;background:#94a3b8"></i></span>
+          <span class="ref" style="left:15.1%" title="整体 15.1%"></span>
+        </span>
+        <span class="pct">50.0%</span>
+      </td>
+      <td class="cell">
+        <span class="bwrap bwrap2">
+          <span class="bar"><i style="width:6.4%;background:#94a3b8"></i></span>
+        </span>
+        <span class="pct2">6.4%</span>
+      </td>
+    </tr></tbody>
+  </table>
+</div>
+
+<div class="grid2">
+  <div class="panel">
+    <div class="ph"><h3>问题分布</h3></div>
+    <div class="donutwrap">
+      <div class="donut"><b>47<em>有问题</em></b></div>
+      <div class="lg">
+        <div><i style="background:#dc2626"></i>小店组<b>48.9%</b></div><div><i style="background:#e08a1e"></i>课程组<b>38.3%</b></div><div><i style="background:#16a34a"></i>图书组<b>6.4%</b></div><div><i style="background:#94a3b8"></i>未匹配<b>6.4%</b></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="ph"><h3>各组工单构成</h3>
+      <span class="note">每行合计＝该组工单总量</span></div>
+    
+    <div class="srow">
+      <div class="slabel"><i style="background:#dc2626"></i>小店组</div>
+      <div class="sbar" title="小店组：无问题 106｜原因 22｜争议点 1">
+        <i style="width:82.2%;background:#cbd5e1"></i><i style="width:17.1%;background:#f59e0b"></i><i style="width:0.8%;background:#dc2626"></i>
+      </div>
+      <div class="snum">23<em>/129</em></div>
+    </div>
+    <div class="srow">
+      <div class="slabel"><i style="background:#e08a1e"></i>课程组</div>
+      <div class="sbar" title="课程组：无问题 130｜原因 15｜争议点 3">
+        <i style="width:87.8%;background:#cbd5e1"></i><i style="width:10.1%;background:#f59e0b"></i><i style="width:2.0%;background:#dc2626"></i>
+      </div>
+      <div class="snum">18<em>/148</em></div>
+    </div>
+    <div class="srow">
+      <div class="slabel"><i style="background:#16a34a"></i>图书组</div>
+      <div class="sbar" title="图书组：无问题 26｜原因 3｜争议点 0">
+        <i style="width:89.7%;background:#cbd5e1"></i><i style="width:10.3%;background:#f59e0b"></i><i style="width:0.0%;background:#dc2626"></i>
+      </div>
+      <div class="snum">3<em>/29</em></div>
+    </div>
+    <div class="srow">
+      <div class="slabel"><i style="background:#94a3b8"></i>未匹配</div>
+      <div class="sbar" title="未匹配：无问题 3｜原因 3｜争议点 0">
+        <i style="width:50.0%;background:#cbd5e1"></i><i style="width:50.0%;background:#f59e0b"></i><i style="width:0.0%;background:#dc2626"></i>
+      </div>
+      <div class="snum">3<em>/6</em></div>
+    </div>
+    <div class="legend">
+      <span><i style="background:#cbd5e1"></i>无问题</span>
+      <span><i style="background:#f59e0b"></i>未明确争议原因</span>
+      <span><i style="background:#dc2626"></i>未明确争议点</span>
+    </div>
+  </div>
+</div>
+
+<div class="panel" style="padding-bottom:6px">
+  <div class="ph"><h3>结论</h3></div>
+  <ul class="list">
+    <li><span class="tag">重点</span><span class="ds">
+      <b>小店组问题率最高</b>：23/129 单有问题，组内 17.8%，
+      高于全量 15.1% 约 2.7 个百分点；同时贡献了全部问题的 48.9%。</span></li>
+    <li><span class="tag">体量</span><span class="ds">
+      <b>小店组问题数最多</b>：23 单，但因基数大（129 单），
+      组内问题率 17.8%，高于全量水平。</span></li>
+    <li><span class="tag">口径</span><span class="ds">
+      47 单问题中，<b>未明确争议原因 43 单</b>（91%）、未明确争议点 4 单。
+      主要短板是「只写了用户不认可什么，没交代问题怎么产生的」。</span></li>
+    <li><span class="tag" style="background:#f1f5f9;color:#64748b;border-color:#e2e8f0">待补</span>
+      <span class="ds">未匹配 6 单（朱昇 2、李诗雨 1 等）人员暂未归属到组，问题率 50%，
+      建议补齐人员组别后并入统计，样本过小不宜单独排名。</span></li>
+  </ul>
+</div>
+
+<h1 style="font-size:16px;margin:24px 0 12px">分组成员明细</h1>
+
+  <div class="panel">
+    <div class="ph"><span class="dot" style="background:#dc2626"></span>
+      <h3>小店组</h3>
+      <span class="cnt" style="color:#dc2626">23</span>
+      <span class="sub">单有问题 · 组内 17.8% · 占全部问题 48.9%</span>
+    </div>
+    <div class="chips"><span class="chip">蔡思凡<b>8</b></span><span class="chip">张芳瑜<b>6</b></span><span class="chip">于才淇<b>3</b></span><span class="chip">唐雅<b>1</b></span><span class="chip">夏庆芸<b>1</b></span><span class="chip">薛蕾<b>1</b></span><span class="chip">刘雨翔<b>1</b></span><span class="chip">赵语婷<b>1</b></span><span class="chip">王喆<b>1</b></span></div>
+    <details><summary>展开 23 条明细</summary><ul class="list">
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">于才淇</span>
+          <span class="sid">261116001357</span>
+          <span class="ds">用户不认可学费扣费规则 之前已经解释多次 还是不认可要投诉 辛苦老师处理</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">于才淇</span>
+          <span class="sid">261114002533</span>
+          <span class="ds">用户教材写了一面 不认可扣除一套教材费用 辛苦老师对接</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">于才淇</span>
+          <span class="sid">261114002165</span>
+          <span class="ds">用户学习全部上完 要求全额退款 辛苦老师对接</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">刘雨翔</span>
+          <span class="sid">261114000754</span>
+          <span class="ds">用户不认可书籍费用 辛苦老师处理</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">唐雅</span>
+          <span class="sid">261118000709</span>
+          <span class="ds">用户目前开讲2讲，告知需要扣除2讲课时费，用户不认可，辛苦老师对接</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">夏庆芸</span>
+          <span class="sid">261115003930</span>
+          <span class="ds">用户不认可教具费，辛苦老师处理</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">张芳瑜</span>
+          <span class="sid">261118006409</span>
+          <span class="ds">用户下单科学系统班 需要退课 不认可书本以及课时费扣除 辛苦联系</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">张芳瑜</span>
+          <span class="sid">261118006332</span>
+          <span class="ds">用户下单剑桥英语299 需要退课 不认可已开课课时费扣除 辛苦联系 用户不接收电话 辛苦发短xin告知处理结果</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">张芳瑜</span>
+          <span class="sid">261118006195</span>
+          <span class="ds">用户下单新思维2899课 需要退课 已开课两节不认可课时费扣除 辛苦联系</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">张芳瑜</span>
+          <span class="sid">261118004385</span>
+          <span class="ds">用户下单初中英语299 需要退课\n已开课两节不认可课时费扣除 辛苦联系</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">张芳瑜</span>
+          <span class="sid">261114008138</span>
+          <span class="ds">用户下单初中英语299 需要退课 不认可扣除课时费 辛苦联系</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">张芳瑜</span>
+          <span class="sid">261114008128</span>
+          <span class="ds">用户下单初中英语299 需要退课 已开课三节需要扣除课时费 用户不认可 辛苦联系</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">王喆</span>
+          <span class="sid">261113003394</span>
+          <span class="ds">用户需求退款，出勤2讲，不认可扣除课时费用，辛苦老师处理</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">蔡思凡</span>
+          <span class="sid">261118006058</span>
+          <span class="ds">用户不认可词典笔扣费，辛苦老师处理</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">蔡思凡</span>
+          <span class="sid">261118004864</span>
+          <span class="ds">用户要求延长半年有效期辛苦老师处理</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">蔡思凡</span>
+          <span class="sid">261118001570</span>
+          <span class="ds">用户不认可退费金额，不认可词典笔退费，辛苦老师处理 82913753 小学,正价产品,剑桥年包,退费争议,常规-协商认可,特殊回邮,赔付-现金/小额打款（0-200）</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">蔡思凡</span>
+          <span class="sid">261115009829</span>
+          <span class="ds">用户词典笔使用，不认可扣费，辛苦老师处理</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">蔡思凡</span>
+          <span class="sid">261115008774</span>
+          <span class="ds">用户不认可出勤扣费，辛苦老师处理</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">蔡思凡</span>
+          <span class="sid">261114003325</span>
+          <span class="ds">用户教具使用，不认可教具费，辛苦老师处理</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">蔡思凡</span>
+          <span class="sid">261114001512</span>
+          <span class="ds">用户不认可教具费，辛苦老师处理</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">薛蕾</span>
+          <span class="sid">261114001505</span>
+          <span class="ds">用户退费，教具使用不认可扣除整套费用，辛苦老师处理，谢谢</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">赵语婷</span>
+          <span class="sid">261113004935</span>
+          <span class="ds">告知用户专员最多帮咱们特殊申请退一半费用149.5‬元，用户不认可，辛苦老师处理谢谢18365821636</span>
+        </li>
+        <li>
+          <span class="tag t2">争议点未写清</span>
+          <span class="who">蔡思凡</span>
+          <span class="sid">261118002583</span>
+          <span class="ds">关联261117001468，辛苦老师致电</span>
+        </li></ul></details>
+  </div>
+  <div class="panel">
+    <div class="ph"><span class="dot" style="background:#e08a1e"></span>
+      <h3>课程组</h3>
+      <span class="cnt" style="color:#e08a1e">18</span>
+      <span class="sub">单有问题 · 组内 12.2% · 占全部问题 38.3%</span>
+    </div>
+    <div class="chips"><span class="chip">徐康程<b>5</b></span><span class="chip">刘艳芬<b>5</b></span><span class="chip">朱丹<b>3</b></span><span class="chip">吴帅琪<b>2</b></span><span class="chip">朱玺<b>1</b></span><span class="chip">王嘉琦<b>1</b></span><span class="chip">李雨婷<b>1</b></span></div>
+    <details><summary>展开 18 条明细</summary><ul class="list">
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">刘艳芬</span>
+          <span class="sid">261117001773</span>
+          <span class="ds">书籍签收，上课两节，不认可课时费，辛苦老师处理。</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">刘艳芬</span>
+          <span class="sid">261114000503</span>
+          <span class="ds">签收4套 不认可书籍扣费 辛苦处理。</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">刘艳芬</span>
+          <span class="sid">261114000443</span>
+          <span class="ds">开6讲.签收书籍，不认可课时费，辛苦老师处理。</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">刘艳芬</span>
+          <span class="sid">261113003336</span>
+          <span class="ds">已签收书籍.已开棵5讲 不认可书本+课时费.要全额退 辛苦老师处理。</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">刘艳芬</span>
+          <span class="sid">261113001785</span>
+          <span class="ds">用户退款，不认可课时费。辛苦老师。</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">吴帅琪</span>
+          <span class="sid">261114000137</span>
+          <span class="ds">用户退课不认可课时费。已解释退费规则，辛苦老师处理</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">吴帅琪</span>
+          <span class="sid">261113001319</span>
+          <span class="ds">用户退课不认可课时费，已解释退费规则，辛苦老师处理</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">徐康程</span>
+          <span class="sid">261119001558</span>
+          <span class="ds">261114006237关联此工单方案可以减免2节，书籍保留，退224.25用户不认可要求全额退</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">徐康程</span>
+          <span class="sid">261115009820</span>
+          <span class="ds">用户出勤两节课书籍使用一套认可课时费不认可书籍费用</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">徐康程</span>
+          <span class="sid">261115007413</span>
+          <span class="ds">261109001828关联此订单仅扣除5讲课时费，书籍无需寄回，退132.89‬元用户不认可要求全额退款</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">朱丹</span>
+          <span class="sid">261116002558</span>
+          <span class="ds">用户需要退费 不认可书费价格 觉得太贵 辛苦老师处理</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">朱丹</span>
+          <span class="sid">261115001095</span>
+          <span class="ds">用户要退款,不认可课时费,辛苦老师处理</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">朱丹</span>
+          <span class="sid">261114000239</span>
+          <span class="ds">用户要退款,不认可涂改后扣除书本费,辛苦老师处理</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">朱玺</span>
+          <span class="sid">261114002652</span>
+          <span class="ds">用户出勤2节，不认可课时费，要求立马全额退，不然就投诉，用户要求不打电话，辛苦老师店铺留言</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">李雨婷</span>
+          <span class="sid">261113001157</span>
+          <span class="ds">用户书籍使用，不认可书本费，表示书本费太贵了，辛苦老师去电处理</span>
+        </li>
+        <li>
+          <span class="tag t2">争议点未写清</span>
+          <span class="who">徐康程</span>
+          <span class="sid">261115007489</span>
+          <span class="ds">261114005620关联此工单用户表示今日下午未带手机无法接听辛苦老师去电处理</span>
+        </li>
+        <li>
+          <span class="tag t2">争议点未写清</span>
+          <span class="who">徐康程</span>
+          <span class="sid">261113002647</span>
+          <span class="ds">261113001638关联工单用户之前号码拦截了去电三次用户未接听到，再次进线询问处理结果辛苦老师处理</span>
+        </li>
+        <li>
+          <span class="tag t2">争议点未写清</span>
+          <span class="who">王嘉琦</span>
+          <span class="sid">261114001374</span>
+          <span class="ds">261019001195，用户反馈为什么没有人电话联系处理，辛苦老师核实电话联系</span>
+        </li></ul></details>
+  </div>
+  <div class="panel">
+    <div class="ph"><span class="dot" style="background:#16a34a"></span>
+      <h3>图书组</h3>
+      <span class="cnt" style="color:#16a34a">3</span>
+      <span class="sub">单有问题 · 组内 10.3% · 占全部问题 6.4%</span>
+    </div>
+    <div class="chips"><span class="chip">周双双<b>2</b></span><span class="chip">郭文俊<b>1</b></span></div>
+    <details><summary>展开 3 条明细</summary><ul class="list">
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">周双双</span>
+          <span class="sid">261116002054</span>
+          <span class="ds">用户要求转寄 辛苦老师处理下 转寄地址 黑龙江省 哈尔滨市 香坊区 朝阳镇 学府路龙运汽配城 B9-16 杨晓云</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">周双双</span>
+          <span class="sid">261116001567</span>
+          <span class="ds">用户要求转接 辛苦老师处理 转寄地址 黑龙江省 哈尔滨市 香坊区 朝阳镇 学府路龙运汽配城 B9-16 杨晓云</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">郭文俊</span>
+          <span class="sid">261119000927</span>
+          <span class="ds">开课两讲，用户不认可需要扣除两讲费用，辛苦老师致电联系，要求在下午三点以后致电</span>
+        </li></ul></details>
+  </div>
+  <div class="panel">
+    <div class="ph"><span class="dot" style="background:#94a3b8"></span>
+      <h3>未匹配</h3>
+      <span class="cnt" style="color:#94a3b8">3</span>
+      <span class="sub">单有问题 · 组内 50.0% · 占全部问题 6.4%</span>
+    </div>
+    <div class="chips"><span class="chip">朱昇<b>2</b></span><span class="chip">李诗雨<b>1</b></span></div>
+    <details><summary>展开 3 条明细</summary><ul class="list">
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">朱昇</span>
+          <span class="sid">261116006498</span>
+          <span class="ds">用户需要换一位数学班主任</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">朱昇</span>
+          <span class="sid">261114005855</span>
+          <span class="ds">用户需要课程时间和主讲\n原ID：819521\n现ID: 819520</span>
+        </li>
+        <li>
+          <span class="tag ">原因未交代</span>
+          <span class="who">李诗雨</span>
+          <span class="sid">261114000631</span>
+          <span class="ds">订单号：6919566445413150360\n需求：修改上课时间和主讲\n原ID：819523\n现ID:</span>
+        </li></ul></details>
+  </div>
+
+<div class="foot">共 312 单 · 有问题 47 单 · 整体问题率 15.1%<br>
+生成于 2026-11-21 ｜ 数据文件 group_stats.json</div>
+</div></body></html>
